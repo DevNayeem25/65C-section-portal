@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>স্টুডেন্ট পোর্টাল - লগইন</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <h2>সেকশন লগইন</h2>
+        <p>পোর্টালে প্রবেশ করতে আপনার আইডি দিন</p>
+        <form id="loginForm">
+            <input type="text" id="studentId" placeholder="স্টুডেন্ট আইডি (উদাঃ 1234)" required>
+            <input type="password" id="password" placeholder="পাসওয়ার্ড" required>
+            <button type="submit">লগইন করুন</button>
+        </form>
+        <p id="errorMessage" style="color: #ff4d4d; display: none; margin-top: 10px;">দয়া করে সঠিক আইডি ও পাসওয়ার্ড দিন।</p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

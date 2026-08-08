@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ক্লাস রুটিন ও নোটিশ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="portal-page">
+    <nav class="navbar">
+        <h2>স্টুডেন্ট পোর্টাল</h2>
+        <button onclick="logout()" class="logout-btn">লগআউট</button>
+    </nav>
+
+    <div class="container">
+        <section class="notices">
+            <h3>📢 সর্বশেষ নোটিশ</h3>
+            <ul>
+                <li>আগামীকাল Discrete Mathematics 65C এর অ্যাসাইনমেন্ট জমা দেওয়ার শেষ দিন।</li>
+                <li>Data Structure 61 C ক্লাসের সময় পরিবর্তন করে সকাল ১০টায় আনা হয়েছে।</li>
+                <li>Google Classroom-এ Physics 2 (CSE 62) এর নতুন লেকচার শিট আপলোড করা হয়েছে।</li>
+                <li>Structured Programming 62D এর ল্যাব রিপোর্ট আগামী সপ্তাহে জমা দিতে হবে।</li>
+            </ul>
+        </section>
+
+        <section class="routine">
+            <h3>📅 ক্লাস রুটিন</h3>
+            <table>
+                <tr>
+                    <th>দিন</th>
+                    <th>কোর্স</th>
+                    <th>সময়</th>
+                </tr>
+                <tr>
+                    <td>রবিবার</td>
+                    <td>Structured Programming 62D</td>
+                    <td>সকাল ১০:০০ - ১১:৩০</td>
+                </tr>
+                <tr>
+                    <td>সোমবার</td>
+                    <td>Discrete Mathematics 65C</td>
+                    <td>সকাল ১১:৩০ - ০১:০০</td>
+                </tr>
+                <tr>
+                    <td>মঙ্গলবার</td>
+                    <td>Physics 2 (CSE 62)</td>
+                    <td>দুপুর ০২:০০ - ০৩:৩০</td>
+                </tr>
+                <tr>
+                    <td>বুধবার</td>
+                    <td>Data Structure 61 C</td>
+                    <td>সকাল ১০:০০ - ১১:৩০</td>
+                </tr>
+            </table>
+        </section>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        // Check if user is logged in
+        window.onload = function() {
+            if(sessionStorage.getItem("isLoggedIn") !== "true") {
+                window.location.href = "index.html";
+            }
+        };
+    </script>
+</body>
+</html>
