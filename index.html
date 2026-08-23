@@ -12,7 +12,6 @@
     <style>
         /* ================= CSS VARIABLES FOR PERMANENT DARK MODE ================= */
         :root {
-            /* Dark Theme - Transparent Glassmorphism */
             --bg-body: #050b14;
             --glass-bg: rgba(15, 23, 42, 0.35);
             --glass-border: rgba(255, 255, 255, 0.1);
@@ -24,14 +23,17 @@
             --primary: #818cf8;
             --primary-light: rgba(117, 81, 255, 0.2);
             --hover-bg: rgba(255, 255, 255, 0.05);
-            --table-hover: rgba(59, 130, 246, 0.7);
+            
+            /* Table Hover: Blue Background, White Text */
+            --table-hover-bg: rgba(59, 130, 246, 0.7); 
+            --table-hover-text: #ffffff;
 
             --success: #34d399;
             --warning: #fbbf24;
 
             --font-main: 'Inter', sans-serif;
 
-            /* Dark Mode Blob Colors for Glass Reflection */
+            /* Dark Mode Blob Colors */
             --blob-1: #4c1d95;
             --blob-2: #0369a1;
             --blob-3: #0f766e;
@@ -89,6 +91,7 @@
             border-radius: 14px;
             display: inline-flex; justify-content: center; align-items: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.3s ease;
         }
 
         /* ================= PREMIUM PRELOADER ================= */
@@ -144,19 +147,20 @@
             width: 100%; background: transparent; border: 1px solid transparent; color: var(--text-secondary);
             padding: 12px 15px; text-align: left; font-size: 15px; font-weight: 500;
             border-radius: 16px; cursor: pointer; display: flex; align-items: center; gap: 15px; margin-bottom: 8px;
+            transition: all 0.3s ease;
         }
         .nav-menu button .glass-icon { width: 36px; height: 36px; font-size: 16px; color: var(--text-secondary); border-radius: 10px;}
         .nav-menu button:hover, .nav-menu button.active { 
             background: var(--glass-icon-bg); border-color: var(--glass-border); color: var(--primary); transform: translateX(5px);
         }
-        .nav-menu button:hover .glass-icon, .nav-menu button.active .glass-icon { color: var(--primary); border-color: var(--primary); background: rgba(67, 24, 255, 0.1); }
+        .nav-menu button:hover .glass-icon, .nav-menu button.active .glass-icon { color: var(--primary); border-color: var(--primary); background: rgba(117, 81, 255, 0.2); }
 
         /* Premium Developer Badge */
         .dev-badge {
             padding: 15px; border-radius: 18px; text-align: center; font-size: 12px; color: var(--text-secondary);
-            position: relative; overflow: hidden;
+            position: relative; overflow: hidden; transition: all 0.4s ease;
         }
-        .dev-badge:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 10px 25px rgba(67, 24, 255, 0.15); }
+        .dev-badge:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 10px 25px rgba(117, 81, 255, 0.15); }
         .dev-badge i { font-size: 16px; color: var(--primary); margin-bottom: 5px; animation: bounce 2s infinite; }
         .dev-badge strong {
             background: linear-gradient(to right, #7dd3fc, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
@@ -177,7 +181,7 @@
         .top-controls { display: flex; gap: 12px; align-items: center; }
         .icon-btn {
             color: var(--text-primary); padding: 10px 18px; border-radius: 14px; font-weight: 600; cursor: pointer;
-            display: flex; align-items: center; gap: 8px; font-size: 14px; background: transparent; border: 1px solid transparent;
+            display: flex; align-items: center; gap: 8px; font-size: 14px; transition: 0.3s; background: transparent; border: 1px solid transparent;
         }
         .icon-btn:hover { background: var(--glass-icon-bg); color: var(--primary); border-color: var(--primary); transform: translateY(-2px);}
         .mobile-menu-btn { display: none; background: transparent; border: none; font-size: 24px; color: var(--text-primary); cursor: pointer; }
@@ -186,7 +190,7 @@
         .section.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ================= FLOATING PILLS & SUBJECT SPECIFIC COLORS ================= */
+        /* ================= FLOATING PILLS ================= */
         .color-socio { color: #38bdf8 !important; }
         .color-math { color: #34d399 !important; }
         .color-eee { color: #fbbf24 !important; }
@@ -209,30 +213,40 @@
         .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-top: 20px; position: relative; z-index: 2;}
         .data-card {
             border-radius: 24px; padding: 25px; display: flex; flex-direction: column; position: relative; overflow: hidden;
-            cursor: pointer;
+            transition: all 0.4s; cursor: pointer;
         }
-        .data-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 15px 35px rgba(67, 24, 255, 0.2); }
+        .data-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 15px 35px rgba(117, 81, 255, 0.2); }
         .data-card .bg-icon { position: absolute; right: -15px; bottom: -15px; font-size: 100px; color: var(--text-secondary); opacity: 0.1; transform: rotate(-15deg); }
         .data-card h3 { font-size: 32px; font-weight: 700; color: var(--primary); margin-bottom: 5px; }
         .data-card p { font-size: 15px; color: var(--text-secondary); font-weight: 500; }
 
-        /* ================= GLASS TABLES ================= */
+        /* ================= DESKTOP TABLES (100% BUG FREE) ================= */
         .table-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
         .search-box { border-radius: 16px; padding: 12px 20px; display: flex; align-items: center; gap: 10px; width: 100%; max-width: 400px; }
         .search-box input { border: none; background: transparent; outline: none; color: var(--text-primary); width: 100%; font-size: 14px; }
         .search-box i { color: var(--text-secondary); }
         .search-box:focus-within { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
 
-        .table-container { border-radius: 24px; overflow: auto; margin-bottom: 30px; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);}
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { background: rgba(255,255,255,0.03); padding: 16px 20px; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; border-bottom: 1px solid var(--glass-border); }
-        td { padding: 15px 20px; text-align: left; border-bottom: 1px solid var(--glass-border); font-size: 14px; font-weight: 500; color: var(--text-primary); }
+        .table-container { 
+            border-radius: 24px; overflow-x: auto; margin-bottom: 30px; 
+            border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); 
+            background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+        }
         
+        table { width: 100%; border-collapse: collapse; min-width: 600px; } /* Min-width ONLY for desktop */
+        th { background: rgba(255,255,255,0.03); padding: 16px 20px; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; border-bottom: 1px solid var(--glass-border); backdrop-filter: blur(10px); }
+        td { padding: 15px 20px; text-align: left; border-bottom: 1px solid var(--glass-border); font-size: 14px; font-weight: 500; color: var(--text-primary); transition: 0.3s ease; }
+        
+        /* HOVER EFFECT - BLUE BACKGROUND, WHITE TEXT */
+        tbody tr { transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s; }
         tbody tr:hover { 
-            background: var(--table-hover) !important;
+            background: var(--table-hover-bg) !important;
             box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
         }
-        tbody tr:hover td { color: #ffffff !important; border-bottom-color: transparent; }
+        tbody tr:hover td { 
+            color: var(--table-hover-text) !important; 
+            border-bottom-color: transparent; 
+        }
 
         .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-left: 8px; color: white; border: 1px solid rgba(255,255,255,0.4); backdrop-filter: blur(5px);}
         .badge-cr { background: rgba(245, 158, 11, 0.8); }
@@ -243,7 +257,7 @@
         .folder-card .folder-icon { 
             width: 75px; height: 75px; border-radius: 22px; 
             display: flex; justify-content: center; align-items: center; 
-            font-size: 34px; margin: 0 auto 15px auto; 
+            font-size: 34px; margin: 0 auto 15px auto; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .folder-card:hover .folder-icon { transform: scale(1.15) rotate(8deg); border-color: var(--primary);}
         .folder-card h4 { font-size: 16px; color: var(--text-primary); margin-bottom: 5px; font-weight: 700;}
@@ -256,7 +270,7 @@
         .comment-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
         
         .wa-btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
-        .btn-send { background: rgba(37, 211, 102, 0.15); color: #25D366; border: 1px solid rgba(37, 211, 102, 0.4); padding: 12px 20px; border-radius: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(10px); }
+        .btn-send { background: rgba(37, 211, 102, 0.15); color: #25D366; border: 1px solid rgba(37, 211, 102, 0.4); padding: 12px 20px; border-radius: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.3s; backdrop-filter: blur(10px); }
         .btn-send:hover { background: rgba(37, 211, 102, 0.3); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(37, 211, 102, 0.2); color: white;}
         .btn-send .glass-icon { width: 30px; height: 30px; font-size: 16px; border: none; background: transparent;}
 
@@ -267,7 +281,7 @@
         .comment-content span { font-size: 12px; color: var(--text-secondary); font-weight: 500; margin-left: 10px; }
         .comment-content p { color: var(--text-primary); font-size: 14px; line-height: 1.6; }
 
-        /* ================= FULL RESPONSIVE FIXES (MOBILE & TABLET) ================= */
+        /* ================= 100% PERFECT MOBILE RESPONSIVE ================= */
         .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 95; backdrop-filter: blur(5px);}
         .sidebar-overlay.active { display: block; }
         
@@ -276,7 +290,6 @@
             .sidebar.active { transform: translateX(0); }
             .main-content { margin-left: 0; width: 100%; }
             .mobile-menu-btn { display: block; }
-            .floating-container { display: none; } /* Hide floating pills on smaller screens to avoid clutter */
         }
 
         @media screen and (max-width: 768px) {
@@ -287,25 +300,66 @@
             .card-grid { grid-template-columns: 1fr; gap: 15px; }
             .table-controls { flex-direction: column; align-items: stretch; gap: 10px; }
             .search-box { max-width: 100%; }
-
-            /* Advanced Responsive Tables for Mobile */
-            table, thead, tbody, th, td, tr { display: block; }
-            thead tr { position: absolute; top: -9999px; left: -9999px; }
-            tr { border: 1px solid var(--glass-border); border-radius: 16px; margin-bottom: 15px; padding: 10px; background: rgba(255,255,255,0.02); }
-            td { border: none; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; padding-left: 45%; text-align: right; font-size: 14px; }
-            td::before { 
-                content: attr(data-label); position: absolute; left: 15px; width: 40%; 
-                white-space: nowrap; font-weight: 600; text-align: left; color: var(--text-secondary); text-transform: uppercase; font-size: 12px; top: 50%; transform: translateY(-50%);
-            }
-            td:last-child { border-bottom: 0; }
-            .table-container { background: transparent; border: none; box-shadow: none; backdrop-filter: none; }
             
+            /* Hide absolute floating pills on mobile to avoid layout overlap */
+            .floating-container { display: none; } 
+
+            /* ================= BUG-FREE MOBILE TABLE SYSTEM ================= */
+            /* Remove container styling that restricts width */
+            .table-container { 
+                background: transparent; border: none; box-shadow: none; 
+                backdrop-filter: none; -webkit-backdrop-filter: none; 
+                padding: 0; overflow: visible;
+            }
+            
+            /* CRITICAL FIX: Override min-width on mobile */
+            table { min-width: 100% !important; display: block; }
+            
+            /* Hide headers */
+            thead { display: none; }
+            tbody { display: block; width: 100%; }
+            
+            /* Convert rows into beautiful glass cards */
+            tr { 
+                display: flex; flex-direction: column;
+                width: 100%; margin-bottom: 15px; 
+                border: 1px solid var(--glass-border); border-radius: 16px; 
+                background: var(--glass-bg); backdrop-filter: blur(16px);
+                padding: 10px 15px;
+            }
+            
+            /* Hover effect for Mobile Cards */
+            tr:hover, tr:active { 
+                background: var(--table-hover-bg) !important; 
+                transform: scale(1.02); 
+            }
+            
+            /* Cells acting as flex rows */
+            td { 
+                display: flex; justify-content: space-between; align-items: center;
+                text-align: right; border-bottom: 1px dashed rgba(255,255,255,0.1); 
+                padding: 12px 0; font-size: 14px; word-break: break-word;
+            }
+            
+            /* Label styling injected from HTML data-label */
+            td::before { 
+                content: attr(data-label); font-weight: 600; color: var(--primary); 
+                text-align: left; flex-basis: 40%; text-transform: uppercase; font-size: 12px;
+            }
+            
+            td:last-child { border-bottom: none; padding-bottom: 0; }
+            td:first-child { padding-top: 0; }
+            
+            /* Hover text color for mobile */
+            tr:hover td::before { color: rgba(255,255,255,0.8); }
+            tr:hover td { color: var(--table-hover-text) !important; }
+
             .wa-btn-group { flex-direction: column; }
             .btn-send { justify-content: center; }
         }
     </style>
 </head>
-<body>
+<body data-theme="dark">
 
     <!-- PRELOADER WITH GLASS EFFECT -->
     <div id="preloader">
@@ -375,7 +429,7 @@
                     <p style="color: var(--text-secondary);">Access all your academic information here.</p>
                 </div>
 
-                <!-- Floating Subject Pills (Glassy) -->
+                <!-- Floating Subject Pills (Hidden on Mobile automatically) -->
                 <div class="floating-container">
                     <div class="float-pill glass-effect pill-1 color-socio"><div class="glass-icon color-socio"><i class="fas fa-users"></i></div> Sociology</div>
                     <div class="float-pill glass-effect pill-2 color-math"><div class="glass-icon color-math"><i class="fas fa-cube"></i></div> Matrices & Geometry</div>
@@ -391,13 +445,13 @@
                     </div>
                     <div class="data-card glass-effect" onclick="switchTab('materials')">
                         <i class="fas fa-book bg-icon"></i>
-                        <h3>4</h3>
+                        <h3>6</h3>
                         <p>Upcoming Subjects</p>
                     </div>
                     <div class="data-card glass-effect">
                         <i class="fas fa-calendar-check bg-icon"></i>
-                        <h3 style="font-size: 24px; line-height: 1.5;">1st Year</h3>
-                        <p>3rd Semester</p>
+                        <h3 style="font-size: 24px; line-height: 1.5;">2nd Year</h3>
+                        <p>Next Semester</p>
                     </div>
                 </div>
 
@@ -442,7 +496,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- data-label attributes added for perfect mobile responsiveness -->
                             <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-101</td><td data-label="Name">Mariya Akther</td></tr>
                             <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-102</td><td data-label="Name">Md Nasirul Islam Chowdhury</td></tr>
                             <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-103</td><td data-label="Name">Mustafizur Rahman Adil</td></tr>
@@ -607,6 +660,9 @@
     </main>
 
     <script>
+        // ================= PERMANENT DARK MODE =================
+        document.body.setAttribute('data-theme', 'dark');
+
         // ================= INITIALIZATION =================
         window.addEventListener('load', function() {
             // Wait for 1.5 seconds so user can see the preloader
