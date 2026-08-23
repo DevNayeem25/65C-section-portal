@@ -7,7 +7,7 @@
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
     
     <style>
         /* ================= CSS VARIABLES FOR PERMANENT DARK MODE ================= */
@@ -24,14 +24,15 @@
             --primary-light: rgba(117, 81, 255, 0.2);
             --hover-bg: rgba(255, 255, 255, 0.05);
             
-            /* Table Hover: Blue Background, White Text */
             --table-hover-bg: rgba(59, 130, 246, 0.7); 
             --table-hover-text: #ffffff;
 
             --success: #34d399;
             --warning: #fbbf24;
+            --danger: #ef4444;
 
             --font-main: 'Inter', sans-serif;
+            --font-code: 'Fira Code', monospace;
 
             /* Dark Mode Blob Colors */
             --blob-1: #4c1d95;
@@ -44,7 +45,7 @@
 
         body { background-color: var(--bg-body); color: var(--text-primary); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        /* ================= AMBIENT BACKGROUND BLOBS FOR GLASS EFFECT ================= */
+        /* ================= AMBIENT BACKGROUND BLOBS ================= */
         .ambient-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden; pointer-events: none;}
         .blob { position: absolute; filter: blur(90px); opacity: 0.6; animation: floatBlob 25s infinite alternate ease-in-out; border-radius: 50%;}
         .blob:nth-child(1) { width: 45vw; height: 45vw; background: var(--blob-1); top: -10%; left: -10%; }
@@ -54,7 +55,7 @@
         
         @keyframes floatBlob { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(60px, 80px) scale(1.15); } }
 
-        /* ================= UNIVERSAL ARCHITECTURAL BACKGROUND ================= */
+        /* ================= UNIVERSAL BACKGROUND ================= */
         .content-area { 
             padding: 30px; flex-grow: 1; max-width: 1400px; margin: 0 auto; width: 100%; 
             position: relative; z-index: 1;
@@ -74,7 +75,7 @@
             opacity: 0.7; pointer-events: none;
         }
 
-        /* ================= HIGH-QUALITY GLASSMORPHISM CLASSES ================= */
+        /* ================= GLASSMORPHISM ================= */
         .glass-effect {
             background: var(--glass-bg);
             backdrop-filter: blur(24px) saturate(180%);
@@ -94,46 +95,90 @@
             transition: 0.3s ease;
         }
 
-        /* ================= PREMIUM PRELOADER ================= */
+        /* ================= PRELOADER ================= */
         #preloader {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: var(--bg-body); z-index: 999999; display: flex;
+            background: rgba(5, 11, 20, 0.95); z-index: 999999; display: flex;
             justify-content: center; align-items: center; flex-direction: column;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            transition: opacity 0.8s ease, transform 0.8s ease, visibility 0.8s ease;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
         }
-        .preloader-content {
-            padding: 40px 50px; border-radius: 28px; text-align: center;
-            display: flex; flex-direction: column; align-items: center; gap: 20px;
-            animation: pulsePreloader 2s infinite alternate ease-in-out;
-            background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.1); 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            backdrop-filter: blur(30px);
+        .terminal-loader {
+            width: 350px; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(129, 140, 248, 0.3);
+            border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(129, 140, 248, 0.15);
+            overflow: hidden; animation: floatTerminal 4s ease-in-out infinite alternate;
         }
+        @keyframes floatTerminal { 0% { transform: translateY(0px); } 100% { transform: translateY(-12px); } }
         
-        .preloader-logo { 
-            width: 90px; height: 90px; border-radius: 50%; object-fit: contain; 
-            background: var(--glass-icon-bg); padding: 8px; border: 1px solid var(--glass-border); 
-            box-shadow: 0 10px 25px rgba(67, 24, 255, 0.2);
+        .terminal-header {
+            background: rgba(255, 255, 255, 0.05); padding: 12px 15px; display: flex; gap: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); align-items: center;
         }
-        .preloader-title { font-size: 32px; font-weight: 800; color: var(--primary); letter-spacing: 1px; margin-bottom: 5px; text-shadow: 0 2px 10px rgba(67, 24, 255, 0.2);}
-        .loading-bar { width: 100%; min-width: 200px; height: 6px; background: var(--glass-border); border-radius: 10px; overflow: hidden; position: relative;}
-        .loading-progress { position: absolute; top: 0; left: 0; height: 100%; width: 50%; background: var(--primary); border-radius: 10px; animation: loadingAnim 1.5s ease-in-out infinite alternate;}
-        .loading-text { font-size: 14px; font-weight: 600; color: var(--text-secondary); letter-spacing: 2px; text-transform: uppercase;}
+        .terminal-header .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; box-shadow: 0 0 10px #27c93f; }
+        .terminal-header .title { margin-left: 10px; font-size: 12px; color: #a3aed1; font-family: var(--font-code); }
+        
+        .terminal-body { padding: 25px 20px; font-family: var(--font-code); font-size: 14px; color: #a8b2d1; text-align: left; line-height: 1.6;}
+        
+        .terminal-body .code-line { opacity: 0; animation: fadeLine 0.1s forwards; }
+        .code-line.l1 { animation-delay: 0.5s; }
+        .code-line.l2 { animation-delay: 1.2s; }
+        .code-line.l3 { animation-delay: 1.8s; }
+        .code-line.l4 { animation-delay: 2.2s; }
+        .code-line.l5 { animation-delay: 2.6s; }
 
-        @keyframes loadingAnim { 0% { width: 0%; left: 0;} 100% { width: 100%; left: 0;} }
-        @keyframes pulsePreloader { 
-            0% { transform: scale(0.98); box-shadow: 0 15px 35px rgba(0,0,0,0.3); } 
-            100% { transform: scale(1.02); box-shadow: 0 25px 50px rgba(0,0,0,0.5); } 
+        .keyword { color: #ff7b72; font-family: var(--font-code); }
+        .string { color: #a5d6ff; font-family: var(--font-code); }
+        .function { color: #d2a8ff; font-family: var(--font-code); }
+        .number { color: #79c0ff; font-family: var(--font-code); }
+        .indent { margin-left: 20px; }
+        
+        .typing-text { 
+            margin-top: 20px; color: #7ee787; font-weight: bold; font-family: var(--font-code); display: flex; align-items: center;
+            opacity: 0; animation: fadeLine 0.1s forwards; animation-delay: 3s;
         }
+        .success-flash {
+            margin-top: 10px; color: #34d399; font-weight: bold; font-family: var(--font-code); text-shadow: 0 0 10px rgba(52,211,153,0.5);
+            opacity: 0; animation: fadeLine 0.1s forwards; animation-delay: 3.8s;
+        }
+        .cursor { display: inline-block; width: 8px; height: 16px; background: #7ee787; animation: blink 1s step-end infinite; margin-left: 5px; box-shadow: 0 0 8px #7ee787;}
+        
+        @keyframes fadeLine { from { opacity: 0; transform: translateX(-5px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        
+        /* ================= STATUS ANIMATIONS ================= */
+        @keyframes pulseLive { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .pulse { display: inline-block; animation: pulseLive 1.5s infinite; }
+
+        @keyframes glowYellow {
+            0% { text-shadow: 0 0 5px rgba(251, 191, 36, 0.3); color: #fbbf24; }
+            50% { text-shadow: 0 0 15px rgba(251, 191, 36, 0.9); color: #fde047; }
+            100% { text-shadow: 0 0 5px rgba(251, 191, 36, 0.3); color: #fbbf24; }
+        }
+        .anim-yellow { animation: glowYellow 2s ease-in-out infinite; font-weight: 700; }
+
+        @keyframes pulseOrange {
+            0% { opacity: 0.7; color: #f97316; text-shadow: 0 0 5px rgba(249,115,22,0.2); }
+            50% { opacity: 1; color: #fb923c; text-shadow: 0 0 12px rgba(249,115,22,0.7); }
+            100% { opacity: 0.7; color: #f97316; text-shadow: 0 0 5px rgba(249,115,22,0.2); }
+        }
+        .anim-orange { animation: pulseOrange 1.5s ease-in-out infinite; font-weight: 700; }
+        
+        .text-red-live { color: var(--danger); font-weight: 700; text-shadow: 0 0 10px rgba(239,68,68,0.5); }
 
         /* ================= SIDEBAR ================= */
         .sidebar {
-            width: 280px; position: fixed; height: 100vh; padding: 30px 20px; display: flex; flex-direction: column;
-            z-index: 100; transition: transform 0.4s ease; border-right: 1px solid var(--glass-border);
+            width: 280px; position: fixed; height: 100vh; padding: 30px 20px; 
+            display: flex; flex-direction: column; z-index: 100; 
+            transition: transform 0.4s ease; border-right: 1px solid var(--glass-border);
+            overflow-y: auto;
         }
+        .sidebar::-webkit-scrollbar { width: 5px; }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
         
-        .logo-area { text-align: center; margin-bottom: 40px; }
+        .logo-area { text-align: center; margin-bottom: 30px; flex-shrink: 0; }
         .logo-area img { 
             width: 80px; height: 80px; border-radius: 50%; margin-bottom: 15px; 
             padding: 6px; background: var(--glass-icon-bg); border: 1px solid var(--glass-border);
@@ -142,7 +187,7 @@
         .logo-area h2 { font-size: 18px; font-weight: 700; color: var(--text-primary); }
         .badge-dept { background: var(--glass-icon-bg); border: 1px solid var(--glass-border); color: var(--primary); padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; display: inline-block; margin-top: 8px; backdrop-filter: blur(5px);}
 
-        .nav-menu { list-style: none; flex-grow: 1; }
+        .nav-menu { list-style: none; flex-grow: 1; margin-bottom: 20px; }
         .nav-menu button {
             width: 100%; background: transparent; border: 1px solid transparent; color: var(--text-secondary);
             padding: 12px 15px; text-align: left; font-size: 15px; font-weight: 500;
@@ -155,10 +200,10 @@
         }
         .nav-menu button:hover .glass-icon, .nav-menu button.active .glass-icon { color: var(--primary); border-color: var(--primary); background: rgba(117, 81, 255, 0.2); }
 
-        /* Premium Developer Badge */
         .dev-badge {
             padding: 15px; border-radius: 18px; text-align: center; font-size: 12px; color: var(--text-secondary);
             position: relative; overflow: hidden; transition: all 0.4s ease;
+            flex-shrink: 0; margin-top: auto; margin-bottom: 10px;
         }
         .dev-badge:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 10px 25px rgba(117, 81, 255, 0.15); }
         .dev-badge i { font-size: 16px; color: var(--primary); margin-bottom: 5px; animation: bounce 2s infinite; }
@@ -168,7 +213,7 @@
         }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 
-        /* ================= MAIN CONTENT & TOP BAR ================= */
+        /* ================= MAIN CONTENT ================= */
         .main-content { margin-left: 280px; width: calc(100% - 280px); display: flex; flex-direction: column; min-height: 100vh;}
         
         .top-bar {
@@ -190,7 +235,35 @@
         .section.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ================= FLOATING PILLS ================= */
+        /* ================= DASHBOARD WIDGETS ================= */
+        .timer-card { background: linear-gradient(135deg, rgba(117, 81, 255, 0.2), rgba(15, 23, 42, 0.5)); border: 1px solid var(--primary); text-align: center; padding: 25px; border-radius: 24px; box-shadow: 0 10px 30px rgba(117, 81, 255, 0.15); margin-bottom: 25px; position: relative; overflow: hidden;}
+        .timer-card::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(117,81,255,0.15) 0%, transparent 70%); pointer-events: none; animation: spin 10s linear infinite;}
+        .timer-title { font-size: 16px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;}
+        .timer-countdown { font-family: var(--font-code); font-size: 42px; font-weight: 700; color: var(--text-primary); text-shadow: 0 0 15px rgba(117, 81, 255, 0.5); letter-spacing: 3px; }
+        .timer-subject { margin-top: 10px; font-size: 18px; color: var(--primary); font-weight: 600; line-height: 1.5; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 25px;}
+        
+        .attendance-container { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;}
+        .circular-chart { position: relative; width: 130px; height: 130px; border-radius: 50%; background: conic-gradient(var(--success) var(--perc, 0%), rgba(255,255,255,0.05) 0); display: flex; justify-content: center; align-items: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.5);}
+        .circular-inner { width: 100px; height: 100px; border-radius: 50%; background: var(--bg-body); display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.5);}
+        .circular-inner h2 { font-size: 24px; color: var(--text-primary); }
+        .att-btns { display: flex; gap: 10px; }
+        .att-btn { background: var(--glass-icon-bg); border: 1px solid var(--glass-border); color: var(--text-primary); padding: 8px 15px; border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: 600;}
+        .att-btn.present:hover { background: rgba(52, 211, 153, 0.2); color: var(--success); border-color: var(--success);}
+        .att-btn.absent:hover { background: rgba(248, 113, 113, 0.2); color: var(--danger); border-color: var(--danger);}
+
+        .sgpa-inputs { display: flex; gap: 10px; margin-bottom: 15px; }
+        .sgpa-inputs select { flex: 1; padding: 10px; background: var(--hover-bg); border: 1px solid var(--glass-border); border-radius: 10px; color: var(--text-primary); outline: none; }
+        .sgpa-inputs button { background: var(--primary-light); color: var(--primary); border: 1px solid var(--primary); padding: 10px 15px; border-radius: 10px; cursor: pointer; font-weight: 600;}
+        .sgpa-inputs button:hover { background: var(--primary); color: white;}
+        .sgpa-result { background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); padding: 15px; border-radius: 12px; text-align: center; margin-top: 15px;}
+        .sgpa-result h3 { color: var(--secondary); font-size: 24px; }
+        .sgpa-list { max-height: 100px; overflow-y: auto; font-size: 13px; color: var(--text-secondary); margin-top: 10px;}
+        .sgpa-list div { display: flex; justify-content: space-between; border-bottom: 1px solid var(--glass-border); padding: 5px 0;}
+
+        /* ================= CARDS & PILLS ================= */
         .color-socio { color: #38bdf8 !important; }
         .color-math { color: #34d399 !important; }
         .color-eee { color: #fbbf24 !important; }
@@ -206,10 +279,8 @@
         .pill-2 { top: 50%; left: 35%; animation-delay: -2s; }
         .pill-3 { top: 15%; right: 25%; animation-delay: -4s; }
         .pill-4 { top: 60%; right: 5%; animation-delay: -1s; }
-
         @keyframes floatPill { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(-20px) rotate(4deg); } }
 
-        /* ================= DASHBOARD CARDS ================= */
         .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-top: 20px; position: relative; z-index: 2;}
         .data-card {
             border-radius: 24px; padding: 25px; display: flex; flex-direction: column; position: relative; overflow: hidden;
@@ -217,10 +288,10 @@
         }
         .data-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 15px 35px rgba(117, 81, 255, 0.2); }
         .data-card .bg-icon { position: absolute; right: -15px; bottom: -15px; font-size: 100px; color: var(--text-secondary); opacity: 0.1; transform: rotate(-15deg); }
-        .data-card h3 { font-size: 32px; font-weight: 700; color: var(--primary); margin-bottom: 5px; }
-        .data-card p { font-size: 15px; color: var(--text-secondary); font-weight: 500; }
+        .data-card h3 { font-size: 28px; font-weight: 700; color: var(--primary); margin-bottom: 5px; }
+        .data-card p { font-size: 14px; color: var(--text-secondary); font-weight: 500; }
 
-        /* ================= DESKTOP TABLES (100% BUG FREE) ================= */
+        /* ================= TABLES ================= */
         .table-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px; }
         .search-box { border-radius: 16px; padding: 12px 20px; display: flex; align-items: center; gap: 10px; width: 100%; max-width: 400px; }
         .search-box input { border: none; background: transparent; outline: none; color: var(--text-primary); width: 100%; font-size: 14px; }
@@ -233,47 +304,78 @@
             background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
         }
         
-        table { width: 100%; border-collapse: collapse; min-width: 600px; } /* Min-width ONLY for desktop */
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
         th { background: rgba(255,255,255,0.03); padding: 16px 20px; text-align: left; font-size: 13px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; border-bottom: 1px solid var(--glass-border); backdrop-filter: blur(10px); }
         td { padding: 15px 20px; text-align: left; border-bottom: 1px solid var(--glass-border); font-size: 14px; font-weight: 500; color: var(--text-primary); transition: 0.3s ease; }
         
-        /* HOVER EFFECT - BLUE BACKGROUND, WHITE TEXT */
         tbody tr { transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s; }
-        tbody tr:hover { 
-            background: var(--table-hover-bg) !important;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-        }
-        tbody tr:hover td { 
-            color: var(--table-hover-text) !important; 
-            border-bottom-color: transparent; 
+        @media screen and (min-width: 769px) {
+            tbody tr:hover { background: var(--table-hover-bg) !important; transform: scale(1.01); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); border-radius: 8px; }
+            tbody tr:hover td { color: var(--table-hover-text) !important; border-bottom-color: transparent; }
         }
 
         .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-left: 8px; color: white; border: 1px solid rgba(255,255,255,0.4); backdrop-filter: blur(5px);}
         .badge-cr { background: rgba(245, 158, 11, 0.8); }
         .badge-advisor { background: rgba(16, 185, 129, 0.8); }
 
-        /* ================= FOLDERS ================= */
-        .folder-card { text-align: center; padding: 30px 20px; }
-        .folder-card .folder-icon { 
-            width: 75px; height: 75px; border-radius: 22px; 
-            display: flex; justify-content: center; align-items: center; 
-            font-size: 34px; margin: 0 auto 15px auto; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* ================= NEW PREMIUM ROUTINE DESIGN ================= */
+        .day-tabs { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 25px; }
+        .day-tabs::-webkit-scrollbar { height: 4px; }
+        .day-tabs::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+        
+        .day-tab {
+            background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-secondary);
+            padding: 12px 25px; border-radius: 14px; font-weight: 600; cursor: pointer; transition: 0.3s;
+            white-space: nowrap; flex-shrink: 0; display: flex; align-items: center; gap: 8px; font-size: 15px;
         }
+        .day-tab:hover { background: var(--hover-bg); border-color: rgba(255,255,255,0.2); }
+        .day-tab.active {
+            background: var(--primary-light); border-color: var(--primary); color: var(--text-primary); 
+            box-shadow: 0 0 20px rgba(117, 81, 255, 0.2);
+        }
+        
+        .class-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border); border-left: 5px solid var(--subject-color, var(--primary));
+            padding: 25px; border-radius: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 25px;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(12px); box-shadow: var(--glass-shadow);
+        }
+        .class-card:hover {
+            transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.5); background: rgba(255, 255, 255, 0.03);
+        }
+        
+        .time-block {
+            text-align: center; padding-right: 25px; border-right: 1px solid var(--glass-border); min-width: 120px;
+        }
+        .time-block .time { font-size: 28px; font-weight: 700; font-family: var(--font-code); color: var(--text-primary); display: block; line-height: 1.1;}
+        .time-block .ampm { font-size: 14px; color: var(--text-secondary); font-weight: 600; letter-spacing: 1px;}
+        
+        .info-block { flex-grow: 1; }
+        .info-block h4 { font-size: 20px; color: var(--text-primary); margin-bottom: 8px; font-weight: 700;}
+        .info-block p { font-size: 14px; color: var(--text-secondary); font-weight: 500; display: flex; align-items: center; gap: 6px;}
+        
+        .action-block { text-align: right; min-width: 140px; display: flex; flex-direction: column; align-items: flex-end; justify-content: center;}
+        .live-status { font-size: 13px; font-weight: 500; margin-bottom: 10px; font-family: var(--font-code);}
+        .join-btn {
+            background: var(--success); color: #000; padding: 10px 20px; border-radius: 12px; text-decoration: none;
+            font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s;
+            opacity: 0; pointer-events: none;
+        }
+        .join-btn:hover { box-shadow: 0 0 20px rgba(52, 211, 153, 0.6); transform: scale(1.05); }
+
+        /* ================= FOLDERS & COMMENTS ================= */
+        .folder-card { text-align: center; padding: 30px 20px; }
+        .folder-card .folder-icon { width: 75px; height: 75px; border-radius: 22px; display: flex; justify-content: center; align-items: center; font-size: 34px; margin: 0 auto 15px auto; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
         .folder-card:hover .folder-icon { transform: scale(1.15) rotate(8deg); border-color: var(--primary);}
         .folder-card h4 { font-size: 16px; color: var(--text-primary); margin-bottom: 5px; font-weight: 700;}
-
         .faculty-avatar { width: 70px; height: 70px; font-size: 30px; border-radius: 50%; margin-bottom: 15px;}
 
-        /* ================= COMMENTS & WHATSAPP ================= */
         .chat-container { border-radius: 24px; padding: 25px; }
         .comment-input { width: 100%; border-radius: 16px; padding: 18px; color: var(--text-primary); min-height: 120px; resize: vertical; outline: none; margin-bottom: 15px; font-size: 15px; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border);}
         .comment-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
-        
         .wa-btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
         .btn-send { background: rgba(37, 211, 102, 0.15); color: #25D366; border: 1px solid rgba(37, 211, 102, 0.4); padding: 12px 20px; border-radius: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.3s; backdrop-filter: blur(10px); }
         .btn-send:hover { background: rgba(37, 211, 102, 0.3); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(37, 211, 102, 0.2); color: white;}
         .btn-send .glass-icon { width: 30px; height: 30px; font-size: 16px; border: none; background: transparent;}
-
         .public-comments { margin-top: 30px; display: flex; flex-direction: column; gap: 15px; }
         .comment-msg { border-radius: 20px; padding: 20px; display: flex; gap: 15px; align-items: flex-start; }
         .comment-avatar { width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; font-weight: bold; flex-shrink: 0; color: var(--primary); }
@@ -281,7 +383,7 @@
         .comment-content span { font-size: 12px; color: var(--text-secondary); font-weight: 500; margin-left: 10px; }
         .comment-content p { color: var(--text-primary); font-size: 14px; line-height: 1.6; }
 
-        /* ================= 100% PERFECT MOBILE RESPONSIVE ================= */
+        /* ================= FULL RESPONSIVE FIXES ================= */
         .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 95; backdrop-filter: blur(5px);}
         .sidebar-overlay.active { display: block; }
         
@@ -298,91 +400,54 @@
             .headline { font-size: 20px; }
             .headline .glass-icon { width: 35px; height: 35px; font-size: 16px; }
             .card-grid { grid-template-columns: 1fr; gap: 15px; }
-            .table-controls { flex-direction: column; align-items: stretch; gap: 10px; }
-            .search-box { max-width: 100%; }
             
-            /* Hide absolute floating pills on mobile to avoid layout overlap */
-            .floating-container { display: none; } 
-
-            /* ================= BUG-FREE MOBILE TABLE SYSTEM ================= */
-            /* Remove container styling that restricts width */
-            .table-container { 
-                background: transparent; border: none; box-shadow: none; 
-                backdrop-filter: none; -webkit-backdrop-filter: none; 
-                padding: 0; overflow: visible;
-            }
+            /* Responsive Floating Pills - FIXED */
+            .floating-container { display: flex !important; flex-wrap: wrap; justify-content: center; height: auto; gap: 10px; padding: 15px 0; margin-bottom: 10px; }
+            .float-pill { position: static !important; animation: none !important; font-size: 12px; padding: 6px 12px; background: var(--glass-icon-bg); backdrop-filter: blur(10px); }
+            .float-pill .glass-icon { width: 20px; height: 20px; font-size: 10px; }
             
-            /* CRITICAL FIX: Override min-width on mobile */
-            table { min-width: 100% !important; display: block; }
+            /* Responsive tables: Hide Serial Column */
+            table th:first-child, table td:first-child { display: none !important; }
             
-            /* Hide headers */
-            thead { display: none; }
-            tbody { display: block; width: 100%; }
-            
-            /* Convert rows into beautiful glass cards */
-            tr { 
-                display: flex; flex-direction: column;
-                width: 100%; margin-bottom: 15px; 
-                border: 1px solid var(--glass-border); border-radius: 16px; 
-                background: var(--glass-bg); backdrop-filter: blur(16px);
-                padding: 10px 15px;
-            }
-            
-            /* Hover effect for Mobile Cards */
-            tr:hover, tr:active { 
-                background: var(--table-hover-bg) !important; 
-                transform: scale(1.02); 
-            }
-            
-            /* Cells acting as flex rows */
-            td { 
-                display: flex; justify-content: space-between; align-items: center;
-                text-align: right; border-bottom: 1px dashed rgba(255,255,255,0.1); 
-                padding: 12px 0; font-size: 14px; word-break: break-word;
-            }
-            
-            /* Label styling injected from HTML data-label */
-            td::before { 
-                content: attr(data-label); font-weight: 600; color: var(--primary); 
-                text-align: left; flex-basis: 40%; text-transform: uppercase; font-size: 12px;
-            }
-            
-            td:last-child { border-bottom: none; padding-bottom: 0; }
-            td:first-child { padding-top: 0; }
-            
-            /* Hover text color for mobile */
-            tr:hover td::before { color: rgba(255,255,255,0.8); }
-            tr:hover td { color: var(--table-hover-text) !important; }
-
-            .wa-btn-group { flex-direction: column; }
-            .btn-send { justify-content: center; }
+            /* Responsive Premium Routine */
+            .class-card { flex-direction: column; align-items: flex-start; gap: 15px; padding: 20px; }
+            .time-block { border-right: none; border-bottom: 1px solid var(--glass-border); padding-right: 0; padding-bottom: 15px; width: 100%; text-align: left; display: flex; align-items: baseline; gap: 10px; }
+            .action-block { width: 100%; display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-top: 5px; }
+            .live-status { margin-bottom: 0; }
         }
     </style>
 </head>
 <body data-theme="dark">
 
-    <!-- PRELOADER WITH GLASS EFFECT -->
+    <!-- PRELOADER -->
     <div id="preloader">
-        <div class="preloader-content">
-            <img src="logo.png" alt="MU Logo" onerror="this.src='https://via.placeholder.com/90x90?text=MU'" class="preloader-logo">
-            <h1 class="preloader-title">CSE 65-C</h1>
-            <div class="loading-bar"><div class="loading-progress"></div></div>
-            <div class="loading-text">Loading Portal...</div>
+        <div class="terminal-loader">
+            <div class="terminal-header">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="title">cse65c_portal.exe</span>
+            </div>
+            <div class="terminal-body">
+                <div class="code-line l1"><span class="keyword">#include</span> <span class="string">&lt;cse65c.h&gt;</span></div>
+                <div class="code-line l2"><span class="keyword">int</span> <span class="function">main</span>() {</div>
+                <div class="code-line l3 indent"><span class="function">load_portal</span>(<span class="number">100</span>);</div>
+                <div class="code-line l4 indent"><span class="keyword">return</span> <span class="number">0</span>;</div>
+                <div class="code-line l5">}</div>
+                <div class="typing-text">> Executing script<span class="cursor"></span></div>
+                <div class="success-flash">[ ✓ ] Compilation Successful. Access Granted...</div>
+            </div>
         </div>
     </div>
 
-    <!-- Ambient Background for Glass Effect -->
+    <!-- Background -->
     <div class="ambient-bg">
-        <div class="blob"></div>
-        <div class="blob"></div>
-        <div class="blob"></div>
-        <div class="blob"></div>
+        <div class="blob"></div><div class="blob"></div><div class="blob"></div><div class="blob"></div>
     </div>
 
-    <!-- Mobile Sidebar Overlay -->
     <div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
 
-    <!-- SIDEBAR (Glass Effect) -->
+    <!-- SIDEBAR -->
     <aside class="sidebar glass-effect" id="sidebar">
         <div class="logo-area">
             <img src="logo.png" alt="MU Logo" onerror="this.src='https://via.placeholder.com/80x80?text=MU'">
@@ -391,13 +456,15 @@
         </div>
         <ul class="nav-menu">
             <li><button class="tab-btn active" onclick="switchTab('dashboard')"><div class="glass-icon"><i class="fas fa-chart-pie"></i></div> Dashboard</button></li>
+            <li><button class="tab-btn" onclick="switchTab('social')"><div class="glass-icon"><i class="fas fa-hashtag"></i></div> Social Media</button></li>
             <li><button class="tab-btn" onclick="switchTab('students')"><div class="glass-icon"><i class="fas fa-users"></i></div> Student List</button></li>
+            <li><button class="tab-btn" onclick="switchTab('routineTab')"><div class="glass-icon"><i class="fas fa-calendar-alt"></i></div> Class Routine</button></li>
             <li><button class="tab-btn" onclick="switchTab('materials')"><div class="glass-icon"><i class="fas fa-folder-open"></i></div> Study Materials</button></li>
             <li><button class="tab-btn" onclick="switchTab('faculty')"><div class="glass-icon"><i class="fas fa-chalkboard-teacher"></i></div> Course Teachers</button></li>
             <li><button class="tab-btn" onclick="switchTab('discussion')"><div class="glass-icon"><i class="fas fa-comments"></i></div> Discussion</button></li>
         </ul>
         
-        <div class="dev-badge glass-effect" style="margin-top: auto;">
+        <div class="dev-badge glass-effect">
             <div class="glass-icon" style="width: 35px; height: 35px; margin-bottom: 8px; border-radius: 50%;"><i class="fas fa-code" style="margin: 0;"></i></div>
             <span>Developed & Designed by</span>
             <strong>Jannatull Nayeem Nur</strong>
@@ -406,13 +473,12 @@
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
-        <!-- TOP BAR (Glass Effect) -->
+        <!-- TOP BAR -->
         <header class="top-bar glass-effect">
             <div style="display: flex; align-items: center; gap: 15px;">
                 <button class="mobile-menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
                 <h2 class="headline"><div class="glass-icon"><i class="fas fa-graduation-cap"></i></div> CSE 65-C</h2>
             </div>
-            
             <div class="top-controls">
                 <button class="icon-btn glass-effect" onclick="switchTab('notices')">
                     <div class="glass-icon" style="width: 28px; height: 28px; border:none; background:transparent;"><i class="fas fa-bell"></i></div> Notices
@@ -424,12 +490,38 @@
             
             <!-- Dashboard Section -->
             <div id="dashboard" class="section active">
-                <div style="position: relative; z-index: 2;">
-                    <h1 style="font-size: 32px; margin-bottom: 5px; color: var(--text-primary); font-weight: 700;">Welcome to CSE 65-C Portal</h1>
-                    <p style="color: var(--text-secondary);">Access all your academic information here.</p>
+                
+                <!-- LIVE CLASS TIMER WIDGET -->
+                <div class="timer-card glass-effect" style="margin-top: 10px;">
+                    <div class="timer-title">Upcoming Class Countdown</div>
+                    <div class="timer-countdown" id="classCountdown">--:--:--</div>
+                    <div class="timer-subject" id="classSubject">Loading schedule...</div>
                 </div>
 
-                <!-- Floating Subject Pills (Hidden on Mobile automatically) -->
+                <!-- QUICK ERP LINKS -->
+                <h3 style="font-size: 20px; color: var(--text-primary); margin-bottom: 15px; position: relative; z-index: 2;">Quick ERP Links</h3>
+                <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 0; margin-bottom: 30px;">
+                    <a href="https://metrouni.edu.bd/" target="_blank" style="text-decoration: none;">
+                        <div class="data-card glass-effect" style="padding: 20px; align-items: center; text-align: center;">
+                            <div class="glass-icon color-socio" style="width: 50px; height: 50px; border-radius: 15px; font-size: 24px; margin-bottom: 10px;"><i class="fas fa-globe"></i></div>
+                            <h4 style="color: var(--text-primary); font-size: 16px;">Main Website</h4>
+                        </div>
+                    </a>
+                    <a href="https://student.metrouni.edu.bd/" target="_blank" style="text-decoration: none;">
+                        <div class="data-card glass-effect" style="padding: 20px; align-items: center; text-align: center;">
+                            <div class="glass-icon color-eee" style="width: 50px; height: 50px; border-radius: 15px; font-size: 24px; margin-bottom: 10px;"><i class="fas fa-user-graduate"></i></div>
+                            <h4 style="color: var(--text-primary); font-size: 16px;">Student Portal</h4>
+                        </div>
+                    </a>
+                    <a href="https://library.metrouni.edu.bd/" target="_blank" style="text-decoration: none;">
+                        <div class="data-card glass-effect" style="padding: 20px; align-items: center; text-align: center;">
+                            <div class="glass-icon color-math" style="width: 50px; height: 50px; border-radius: 15px; font-size: 24px; margin-bottom: 10px;"><i class="fas fa-book-reader"></i></div>
+                            <h4 style="color: var(--text-primary); font-size: 16px;">Library Portal</h4>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Floating Subject Pills (Fixed for Mobile) -->
                 <div class="floating-container">
                     <div class="float-pill glass-effect pill-1 color-socio"><div class="glass-icon color-socio"><i class="fas fa-users"></i></div> Sociology</div>
                     <div class="float-pill glass-effect pill-2 color-math"><div class="glass-icon color-math"><i class="fas fa-cube"></i></div> Matrices & Geometry</div>
@@ -437,36 +529,82 @@
                     <div class="float-pill glass-effect pill-4 color-ds"><div class="glass-icon color-ds"><i class="fas fa-database"></i></div> Data Structure</div>
                 </div>
 
-                <div class="card-grid">
-                    <div class="data-card glass-effect" onclick="switchTab('students')">
-                        <i class="fas fa-user-graduate bg-icon"></i>
-                        <h3 id="totalDashStudents">0</h3>
-                        <p>Total Active Students</p>
+                <!-- Academic Tools (CGPA & Attendance) -->
+                <div class="tools-grid">
+                    <!-- CGPA Calculator -->
+                    <div class="data-card glass-effect" style="padding: 25px;">
+                        <h3 style="font-size: 20px; margin-bottom: 15px;"><i class="fas fa-calculator" style="color: var(--secondary); margin-right: 10px;"></i> SGPA Calculator</h3>
+                        <div class="sgpa-inputs">
+                            <select id="gradeSelect">
+                                <option value="4.00">A+ (4.00)</option>
+                                <option value="3.75">A (3.75)</option>
+                                <option value="3.50">A- (3.50)</option>
+                                <option value="3.25">B+ (3.25)</option>
+                                <option value="3.00">B (3.00)</option>
+                                <option value="2.75">B- (2.75)</option>
+                                <option value="2.50">C+ (2.50)</option>
+                                <option value="2.25">C (2.25)</option>
+                                <option value="2.00">D (2.00)</option>
+                                <option value="0.00">F (0.00)</option>
+                            </select>
+                            <select id="creditSelect">
+                                <option value="3">3 Credits</option>
+                                <option value="1.5">1.5 Credits</option>
+                            </select>
+                            <button onclick="addCourseToSGPA()"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <div class="sgpa-list" id="sgpaCourseList"></div>
+                        <div class="sgpa-result">
+                            <h3 id="sgpaDisplay">0.00</h3>
+                            <p style="font-size: 13px; margin-top:5px;">Estimated SGPA</p>
+                            <button onclick="resetSGPA()" style="background:transparent; border:none; color:var(--danger); cursor:pointer; margin-top:5px; font-size:12px;">Reset Data</button>
+                        </div>
                     </div>
-                    <div class="data-card glass-effect" onclick="switchTab('materials')">
-                        <i class="fas fa-book bg-icon"></i>
-                        <h3>4</h3>
-                        <p>Upcoming Subjects</p>
-                    </div>
-                    <div class="data-card glass-effect">
-                        <i class="fas fa-calendar-check bg-icon"></i>
-                        <h3 style="font-size: 24px; line-height: 1.5;">1st Year</h3>
-                        <p>3rd  Semester</p>
+
+                    <!-- Attendance Tracker -->
+                    <div class="data-card glass-effect" style="padding: 25px; display: flex; flex-direction: column; align-items: center;">
+                        <h3 style="font-size: 20px; margin-bottom: 20px; align-self: flex-start;"><i class="fas fa-clipboard-check" style="color: var(--success); margin-right: 10px;"></i> Attendance Tracker</h3>
+                        <div class="attendance-container">
+                            <div class="circular-chart" id="attChart">
+                                <div class="circular-inner">
+                                    <h2 id="attPercent">0%</h2>
+                                    <span style="font-size: 11px; color: var(--text-secondary);">Attendance</span>
+                                </div>
+                            </div>
+                            <div style="font-size: 14px; color: var(--text-secondary); margin-top: 10px;">
+                                Total: <span id="attTotal" style="color:var(--text-primary); font-weight:bold;">0</span> | 
+                                Present: <span id="attPresent" style="color:var(--success); font-weight:bold;">0</span>
+                            </div>
+                            <div class="att-btns">
+                                <button class="att-btn present" onclick="updateAttendance('present')"><i class="fas fa-check"></i> Present</button>
+                                <button class="att-btn absent" onclick="updateAttendance('absent')"><i class="fas fa-times"></i> Absent</button>
+                            </div>
+                            <button onclick="resetAttendance()" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:12px; margin-top: 5px;">Reset Tracker</button>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <h3 style="margin-top: 40px; margin-bottom: 20px; font-size: 20px; color: var(--text-primary); position: relative; z-index: 2;">Social Connectivity</h3>
-                <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+            <!-- Social Media Section -->
+            <div id="social" class="section">
+                <div style="margin-bottom: 25px;">
+                    <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 5px; color: var(--text-primary);">Social Media Connectivity</h2>
+                    <p style="color: var(--text-secondary);">Stay connected with your classmates on social platforms.</p>
+                </div>
+                
+                <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px;">
                     <a href="https://chat.whatsapp.com/H2RDTDUHJkN1c8EmEUPsKM?s=cl&p=i&mlu=4" target="_blank" style="text-decoration: none;">
-                        <div class="data-card glass-effect" style="border-top: 4px solid #25D366;">
-                            <div class="glass-icon" style="width: 55px; height: 55px; border-radius: 50%; margin-bottom: 15px;"><i class="fab fa-whatsapp" style="font-size: 30px; color: #25D366;"></i></div>
-                            <h4 style="color: var(--text-primary); font-size: 18px;">WhatsApp Group</h4>
+                        <div class="data-card glass-effect" style="border-top: 4px solid #25D366; text-align: center; align-items: center; padding: 40px 25px;">
+                            <div class="glass-icon" style="width: 70px; height: 70px; border-radius: 50%; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2);"><i class="fab fa-whatsapp" style="font-size: 40px; color: #25D366;"></i></div>
+                            <h4 style="color: var(--text-primary); font-size: 20px; font-weight: 700; margin-bottom: 8px;">WhatsApp Group</h4>
+                            <p style="color: var(--text-secondary); font-size: 14px;">Join for instant discussions and quick updates.</p>
                         </div>
                     </a>
                     <a href="https://www.facebook.com/share/1Hqv2jULGL/?mibextid=wwXIfr" target="_blank" style="text-decoration: none;">
-                        <div class="data-card glass-effect" style="border-top: 4px solid #1877F2;">
-                            <div class="glass-icon" style="width: 55px; height: 55px; border-radius: 50%; margin-bottom: 15px;"><i class="fab fa-facebook" style="font-size: 30px; color: #1877F2;"></i></div>
-                            <h4 style="color: var(--text-primary); font-size: 18px;">Facebook Page</h4>
+                        <div class="data-card glass-effect" style="border-top: 4px solid #1877F2; text-align: center; align-items: center; padding: 40px 25px;">
+                            <div class="glass-icon" style="width: 70px; height: 70px; border-radius: 50%; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(24, 119, 242, 0.2);"><i class="fab fa-facebook" style="font-size: 40px; color: #1877F2;"></i></div>
+                            <h4 style="color: var(--text-primary); font-size: 20px; font-weight: 700; margin-bottom: 8px;">Facebook Page</h4>
+                            <p style="color: var(--text-secondary); font-size: 14px;">Follow for official announcements and events.</p>
                         </div>
                     </a>
                 </div>
@@ -481,124 +619,118 @@
                     </div>
                     <button class="icon-btn glass-effect" onclick="window.print()"><div class="glass-icon" style="width:28px; height:28px; border:none; background:transparent;"><i class="fas fa-print"></i></div> Print List</button>
                 </div>
-                
                 <p style="margin-bottom: 15px; font-weight: 600; color: var(--text-secondary);">Total Active Students: <span id="totalCounter" style="color: var(--primary);">0</span></p>
 
-                <!-- Regular Students Table -->
                 <h3 style="margin-bottom: 15px; font-size: 20px; color: var(--text-primary);">Regular Students</h3>
                 <div class="table-container">
                     <table id="regularTable">
-                        <thead>
-                            <tr>
-                                <th>Serial</th>
-                                <th>Student ID</th>
-                                <th>Name</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>Serial</th><th>Student ID</th><th>Name</th></tr></thead>
                         <tbody>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-101</td><td data-label="Name">Mariya Akther</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-102</td><td data-label="Name">Md Nasirul Islam Chowdhury</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-103</td><td data-label="Name">Mustafizur Rahman Adil</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-104</td><td data-label="Name">Rihma Ahmed</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-105</td><td data-label="Name">Suraiya Akhter</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-106</td><td data-label="Name">Mahfuza Ahmed Lima</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-107</td><td data-label="Name">Anika Hussain</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-108</td><td data-label="Name">Mehruba Rahman Meem</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-109</td><td data-label="Name">Marjan Alam Rahi</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-110</td><td data-label="Name">Kazi Tawhidur Rahman</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-111</td><td data-label="Name">Muhammad Sabbir Ahmed Kamaly <span class="badge badge-cr">CR</span></td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-112</td><td data-label="Name">Dewan Tasawar Mazid</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-113</td><td data-label="Name">Saliha Bhuiyan Rupa</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-114</td><td data-label="Name">Blison Pohsyad</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-115</td><td data-label="Name">Niloy Patro</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-116</td><td data-label="Name">Tuli Datta</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-117</td><td data-label="Name">Samia Mahbub</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-118</td><td data-label="Name">Mouli Roy</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-119</td><td data-label="Name">Shah Nusrat Jahan</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-120</td><td data-label="Name">Suprova Hossain Obonti</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-122</td><td data-label="Name">Jannatul Mawa</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-123</td><td data-label="Name">Namrota Sarty</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-124</td><td data-label="Name">Khadiza Akther Tarin</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-125</td><td data-label="Name">Tasnim Ahmed Maliha</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-126</td><td data-label="Name">MST Samira Jannat Lavoni</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-128</td><td data-label="Name">Sanjida Jannat</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-129</td><td data-label="Name">Shanjida Fateha Lima</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-130</td><td data-label="Name">Sajeda Nur Chowdhury</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-131</td><td data-label="Name">Fayja Islam Chowdhury</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-132</td><td data-label="Name">Fahi Muhtadee</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-133</td><td data-label="Name">Nafisha Akter Trisha</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-134</td><td data-label="Name">Nowshin Nawal Khan</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-135</td><td data-label="Name">Tamzidur Rahman</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-136</td><td data-label="Name">Yousuf Ahmed Sunny</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-137</td><td data-label="Name">Sunjida Akter</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-138</td><td data-label="Name">Tajbid Ahmed Chowdhury</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-139</td><td data-label="Name">Sadia Akther</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-140</td><td data-label="Name">Maisha Tasnim Chowdhury</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-141</td><td data-label="Name">Amirul Islam</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-142</td><td data-label="Name">Arjumand Ara Liza</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-144</td><td data-label="Name">Zarin Mashud Sabah <span class="badge badge-cr">CR</span></td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-145</td><td data-label="Name">Sagufta Nasrin Luthfa</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-146</td><td data-label="Name">Afrida Anjum</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-147</td><td data-label="Name">Md. Ariful Haque</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-148</td><td data-label="Name">Puspita Sinha</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-149</td><td data-label="Name">Farhana Noor Shumi</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">261-115-150</td><td data-label="Name">Sanjida Tasnim Lisa</td></tr>
+                            <tr><td></td><td>261-115-101</td><td>Mariya Akther</td></tr>
+                            <tr><td></td><td>261-115-102</td><td>Md Nasirul Islam Chowdhury</td></tr>
+                            <tr><td></td><td>261-115-103</td><td>Mustafizur Rahman Adil</td></tr>
+                            <tr><td></td><td>261-115-104</td><td>Rihma Ahmed</td></tr>
+                            <tr><td></td><td>261-115-105</td><td>Suraiya Akhter</td></tr>
+                            <tr><td></td><td>261-115-106</td><td>Mahfuza Ahmed Lima</td></tr>
+                            <tr><td></td><td>261-115-107</td><td>Anika Hussain</td></tr>
+                            <tr><td></td><td>261-115-108</td><td>Mehruba Rahman Meem</td></tr>
+                            <tr><td></td><td>261-115-109</td><td>Marjan Alam Rahi</td></tr>
+                            <tr><td></td><td>261-115-110</td><td>Kazi Tawhidur Rahman</td></tr>
+                            <tr><td></td><td>261-115-111</td><td>Muhammad Sabbir Ahmed Kamaly <span class="badge badge-cr">CR</span></td></tr>
+                            <tr><td></td><td>261-115-112</td><td>Dewan Tasawar Mazid</td></tr>
+                            <tr><td></td><td>261-115-113</td><td>Saliha Bhuiyan Rupa</td></tr>
+                            <tr><td></td><td>261-115-114</td><td>Blison Pohsyad</td></tr>
+                            <tr><td></td><td>261-115-115</td><td>Niloy Patro</td></tr>
+                            <tr><td></td><td>261-115-116</td><td>Tuli Datta</td></tr>
+                            <tr><td></td><td>261-115-117</td><td>Samia Mahbub</td></tr>
+                            <tr><td></td><td>261-115-118</td><td>Mouli Roy</td></tr>
+                            <tr><td></td><td>261-115-119</td><td>Shah Nusrat Jahan</td></tr>
+                            <tr><td></td><td>261-115-120</td><td>Suprova Hossain Obonti</td></tr>
+                            <tr><td></td><td>261-115-122</td><td>Jannatul Mawa</td></tr>
+                            <tr><td></td><td>261-115-123</td><td>Namrota Sarty</td></tr>
+                            <tr><td></td><td>261-115-124</td><td>Khadiza Akther Tarin</td></tr>
+                            <tr><td></td><td>261-115-125</td><td>Tasnim Ahmed Maliha</td></tr>
+                            <tr><td></td><td>261-115-126</td><td>MST Samira Jannat Lavoni</td></tr>
+                            <tr><td></td><td>261-115-128</td><td>Sanjida Jannat</td></tr>
+                            <tr><td></td><td>261-115-129</td><td>Shanjida Fateha Lima</td></tr>
+                            <tr><td></td><td>261-115-130</td><td>Sajeda Nur Chowdhury</td></tr>
+                            <tr><td></td><td>261-115-131</td><td>Fayja Islam Chowdhury</td></tr>
+                            <tr><td></td><td>261-115-132</td><td>Fahi Muhtadee</td></tr>
+                            <tr><td></td><td>261-115-133</td><td>Nafisha Akter Trisha</td></tr>
+                            <tr><td></td><td>261-115-134</td><td>Nowshin Nawal Khan</td></tr>
+                            <tr><td></td><td>261-115-135</td><td>Tamzidur Rahman</td></tr>
+                            <tr><td></td><td>261-115-136</td><td>Yousuf Ahmed Sunny</td></tr>
+                            <tr><td></td><td>261-115-137</td><td>Sunjida Akter</td></tr>
+                            <tr><td></td><td>261-115-138</td><td>Tajbid Ahmed Chowdhury</td></tr>
+                            <tr><td></td><td>261-115-139</td><td>Sadia Akther</td></tr>
+                            <tr><td></td><td>261-115-140</td><td>Maisha Tasnim Chowdhury</td></tr>
+                            <tr><td></td><td>261-115-141</td><td>Amirul Islam</td></tr>
+                            <tr><td></td><td>261-115-142</td><td>Arjumand Ara Liza</td></tr>
+                            <tr><td></td><td>261-115-144</td><td>Zarin Mashud Sabah <span class="badge badge-cr">CR</span></td></tr>
+                            <tr><td></td><td>261-115-145</td><td>Sagufta Nasrin Luthfa</td></tr>
+                            <tr><td></td><td>261-115-146</td><td>Afrida Anjum</td></tr>
+                            <tr><td></td><td>261-115-147</td><td>Md. Ariful Haque</td></tr>
+                            <tr><td></td><td>261-115-148</td><td>Puspita Sinha</td></tr>
+                            <tr><td></td><td>261-115-149</td><td>Farhana Noor Shumi</td></tr>
+                            <tr><td></td><td>261-115-150</td><td>Sanjida Tasnim Lisa</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Re-Admission Students Table -->
                 <h3 style="margin-top: 30px; margin-bottom: 15px; font-size: 20px; color: var(--text-primary);">Re-Admission Students</h3>
                 <div class="table-container">
                     <table id="reTable">
-                        <thead>
-                            <tr>
-                                <th>Serial</th>
-                                <th>Student ID</th>
-                                <th>Name</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>Serial</th><th>Student ID</th><th>Name</th></tr></thead>
                         <tbody>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">252-115-120</td><td data-label="Name">ABDULLAH AL MAHI CHOWDHURY</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">253-115-103</td><td data-label="Name">PORAG CHOWDHURY</td></tr>
-                            <tr>
-                                <td data-label="Serial"></td>
-                                <td data-label="Student ID">251-115-183</td>
-                                <td data-label="Name">JANNATULL NAYEEM NUR <span class="badge badge-advisor">Advisor</span></td>
-                            </tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">252-115-116</td><td data-label="Name">MD ABDUL AHAD SAIEDY</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">231-115-324</td><td data-label="Name">MD AL WALID SAMAUN</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">252-115-176</td><td data-label="Name">Samiha Mahjabin Jarin</td></tr>
-                            <tr><td data-label="Serial"></td><td data-label="Student ID">222-115-017</td><td data-label="Name">Razia Sultana Shammi (Mukti)</td></tr>
+                            <tr><td></td><td>252-115-120</td><td>ABDULLAH AL MAHI CHOWDHURY</td></tr>
+                            <tr><td></td><td>253-115-103</td><td>PORAG CHOWDHURY</td></tr>
+                            <tr><td></td><td>251-115-183</td><td>JANNATULL NAYEEM NUR <span class="badge badge-advisor">Advisor</span></td></tr>
+                            <tr><td></td><td>252-115-116</td><td>MD ABDUL AHAD SAIEDY</td></tr>
+                            <tr><td></td><td>231-115-324</td><td>MD AL WALID SAMAUN</td></tr>
+                            <tr><td></td><td>252-115-176</td><td>Samiha Mahjabin Jarin</td></tr>
+                            <tr><td></td><td>222-115-017</td><td>Razia Sultana Shammi (Mukti)</td></tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- PREMIUM CLASS ROUTINE SECTION -->
+            <div id="routineTab" class="section">
+                <div style="margin-bottom: 25px;">
+                    <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 5px; color: var(--text-primary);">Class Routine</h2>
+                    <p style="color: var(--text-secondary);">Select a day to view schedule. Live status and direct join links are synced dynamically.</p>
+                </div>
+                
+                <!-- Day Tabs (Interactive) -->
+                <div class="day-tabs" id="routineTabs">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Content Area for Selected Day -->
+                <div id="routineContent">
+                    <!-- Populated by JS -->
                 </div>
             </div>
 
             <!-- Study Materials Section -->
             <div id="materials" class="section">
                 <h2 style="font-size: 24px; margin-bottom: 25px; color: var(--text-primary);">Study Materials & Folders</h2>
-                
                 <div class="card-grid">
                     <div class="data-card folder-card glass-effect" onclick="alert('Drive Link will be added here.')">
                         <div class="folder-icon glass-icon color-socio"><i class="fas fa-users"></i></div>
-                        <h4>Introduction to Sociology</h4>
-                        <p>SOC 0314 1311</p>
+                        <h4>Introduction to Sociology</h4><p>SOC 0314 1311</p>
                     </div>
                     <div class="data-card folder-card glass-effect" onclick="alert('Drive Link will be added here.')">
                         <div class="folder-icon glass-icon color-math"><i class="fas fa-cube"></i></div>
-                        <h4>Matrices, Geometry & Vector</h4>
-                        <p>MAT 0541 1307</p>
+                        <h4>Matrices, Geometry & Vector</h4><p>MAT 0541 1307</p>
                     </div>
                     <div class="data-card folder-card glass-effect" onclick="alert('Drive Link will be added here.')">
                         <div class="folder-icon glass-icon color-eee"><i class="fas fa-bolt"></i></div>
-                        <h4>Basic EEE Circuits</h4>
-                        <p>EEE 0713 1305 / 1306</p>
+                        <h4>Basic EEE Circuits</h4><p>EEE 0713 1305 / 1306</p>
                     </div>
                     <div class="data-card folder-card glass-effect" onclick="alert('Drive Link will be added here.')">
                         <div class="folder-icon glass-icon color-ds"><i class="fas fa-database"></i></div>
-                        <h4>Data Structure</h4>
-                        <p>CSE 0613 1307 / 1308</p>
+                        <h4>Data Structure</h4><p>CSE 0613 1307 / 1308</p>
                     </div>
                 </div>
             </div>
@@ -626,12 +758,10 @@
                 </div>
             </div>
 
-            <!-- Notices Section (Dynamic Fetch ready) -->
-            <div id="notices" class="section">
-                <!-- Data will be loaded via JavaScript -->
-            </div>
+            <!-- Notices Section -->
+            <div id="notices" class="section"></div>
 
-            <!-- Discussion / Comment Box Section -->
+            <!-- Discussion Section -->
             <div id="discussion" class="section">
                 <div style="margin-bottom: 25px;">
                     <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 5px; color: var(--text-primary);">Discussion & Comments</h2>
@@ -640,106 +770,350 @@
 
                 <div class="chat-container glass-effect">
                     <textarea class="comment-input glass-effect" id="commentInput" placeholder="Write your suggestion or message here..."></textarea>
-                    
                     <p style="margin-bottom: 15px; font-size: 13px; color: var(--warning);">* Note: Your comment will be visible publicly on this device and sent to the selected WhatsApp.</p>
-
                     <div class="wa-btn-group">
                         <button class="btn-send" onclick="submitComment('advisor')"><div class="glass-icon"><i class="fab fa-whatsapp"></i></div> Advisor (Nayeem)</button>
                         <button class="btn-send" onclick="submitComment('cr1')"><div class="glass-icon"><i class="fab fa-whatsapp"></i></div> CR 1 (Sabah)</button>
                         <button class="btn-send" onclick="submitComment('cr2')"><div class="glass-icon"><i class="fab fa-whatsapp"></i></div> CR 2 (Sabbir)</button>
                     </div>
                 </div>
-
                 <h3 style="font-size: 18px; margin-top: 30px; margin-bottom: 15px; color: var(--text-primary);">Public Comments</h3>
-                <div class="public-comments" id="commentList">
-                    <!-- Comments loaded via LocalStorage will appear here -->
-                </div>
+                <div class="public-comments" id="commentList"></div>
             </div>
 
         </div>
     </main>
 
     <script>
-        // ================= PERMANENT DARK MODE =================
-        document.body.setAttribute('data-theme', 'dark');
-
-        // ================= INITIALIZATION =================
+        // ================= PRELOADER =================
         window.addEventListener('load', function() {
-            // Wait for 1.5 seconds so user can see the preloader
-            setTimeout(() => { 
+            setTimeout(() => {
                 const preloader = document.getElementById('preloader');
-                preloader.style.opacity = '0';
-                setTimeout(() => { preloader.style.display = 'none'; }, 600);
-            }, 1500);
+                if(preloader) {
+                    preloader.style.transform = 'scale(1.1)';
+                    preloader.style.opacity = '0';
+                    setTimeout(() => { preloader.style.display = 'none'; }, 800);
+                }
+            }, 4500); 
 
             initializeTables();
             loadComments();
-            fetchNotices(); // Load dynamic notices
+            fetchNotices(); 
+            initRoutine(); 
+            setInterval(updateAllTimers, 1000); 
+            updateAllTimers();
+            loadAttendance();
         });
 
-        // ================= DYNAMIC NOTICE BOARD (READY FOR BACKEND/API) =================
-        const NOTICE_API_URL = "https://your-backend-api-link.com/get-notices"; 
+        // ================= PREMIUM ROUTINE LOGIC =================
+        const routineData = {
+            0: [
+                {sub: "Introduction to Sociology", start: "08:30", end: "10:00", link: "https://meet.google.com/xyz", color: "#38bdf8"}, 
+                {sub: "Matrices, Geometry & Vector", start: "10:00", end: "11:30", link: "https://meet.google.com/abc", color: "#34d399"}
+            ],
+            1: [
+                {sub: "Basic EEE Circuits", start: "08:30", end: "10:00", link: "https://meet.google.com/def", color: "#fbbf24"}, 
+                {sub: "Data Structure", start: "10:00", end: "11:30", link: "https://meet.google.com/hij", color: "#a78bfa"}, 
+                {sub: "Basic EEE Circuits Lab", start: "11:30", end: "13:00", link: "https://meet.google.com/klm", color: "#8b5cf6"}
+            ],
+            2: [
+                {sub: "Data Structure Lab", start: "13:00", end: "14:30", link: "https://meet.google.com/nop", color: "#a78bfa"}, 
+                {sub: "Introduction to Sociology", start: "14:30", end: "16:00", link: "https://meet.google.com/qrs", color: "#38bdf8"}
+            ],
+            3: [
+                {sub: "Data Structure", start: "13:00", end: "14:30", link: "https://meet.google.com/tuv", color: "#a78bfa"}, 
+                {sub: "Basic EEE Circuits", start: "14:30", end: "16:00", link: "https://meet.google.com/wxy", color: "#fbbf24"}
+            ],
+            4: [
+                {sub: "Matrices, Geometry & Vector", start: "08:30", end: "10:00", link: "https://meet.google.com/zab", color: "#34d399"}, 
+                {sub: "Data Structure Lab", start: "10:00", end: "11:30", link: "https://meet.google.com/cde", color: "#a78bfa"}, 
+                {sub: "Basic EEE Circuits Lab", start: "11:30", end: "13:00", link: "https://meet.google.com/fgh", color: "#8b5cf6"}
+            ],
+            5: [], 6: [] // Fri, Sat Off
+        };
+        const daysArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        
+        let currentRoutineDay = new Date().getDay();
 
-        async function fetchNotices() {
-            const noticeContainer = document.getElementById('notices');
+        function initRoutine() {
+            renderRoutineTabs();
+            selectRoutineDay(currentRoutineDay);
+        }
+
+        function renderRoutineTabs() {
+            const tabsContainer = document.getElementById('routineTabs');
+            tabsContainer.innerHTML = '';
             
-            try {
-                // Example structure when you add real API
-                // const response = await fetch(NOTICE_API_URL);
-                // const noticesData = await response.json();
+            daysArray.forEach((dayName, index) => {
+                let badge = (index === new Date().getDay()) ? `<span style="background:var(--primary); color:#fff; font-size:10px; padding:2px 6px; border-radius:6px; margin-left:5px;">Today</span>` : ``;
+                tabsContainer.innerHTML += `
+                    <button class="day-tab" id="tab-day-${index}" onclick="selectRoutineDay(${index})">
+                        ${dayName} ${badge}
+                    </button>`;
+            });
+        }
 
-                const noticesData = [
-                    {
-                        title: "Class Representatives (CR) Update",
-                        body: "Current Class Representatives are Sabbir Kamaly and Zarin Mashud Sabah.",
-                        icon: "fa-star",
-                        color: "var(--warning)"
-                    },
-                    {
-                        title: "Website Suggestions",
-                        body: "Website is under development. Please provide your suggestions to improve the portal.",
-                        icon: "fa-lightbulb",
-                        color: "var(--primary)"
+        function selectRoutineDay(dayIndex) {
+            currentRoutineDay = dayIndex;
+            document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+            let activeTab = document.getElementById(`tab-day-${dayIndex}`);
+            if(activeTab) activeTab.classList.add('active');
+            
+            renderRoutineContent(dayIndex);
+            updateAllTimers(); // Force instant timer update
+        }
+
+        function renderRoutineContent(dayIndex) {
+            const content = document.getElementById('routineContent');
+            content.innerHTML = '';
+            
+            if (!routineData[dayIndex] || routineData[dayIndex].length === 0) {
+                content.innerHTML = `
+                    <div class="glass-effect" style="padding:50px; text-align:center; border-radius:20px; color:var(--text-secondary);">
+                        <i class="fas fa-bed" style="font-size:50px; margin-bottom:15px; opacity:0.5;"></i>
+                        <h3 style="color:var(--text-primary); margin-bottom:5px;">No Classes Today</h3>
+                        <p>Enjoy your day off or utilize the time for self-study!</p>
+                    </div>`;
+                return;
+            }
+
+            routineData[dayIndex].forEach((cls, idx) => {
+                let timeParts = cls.start.split(":");
+                let hour = parseInt(timeParts[0]);
+                let ampm = hour >= 12 ? "PM" : "AM";
+                let displayHour = hour > 12 ? hour - 12 : (hour === 0 ? 12 : hour);
+                let displayTime = `${displayHour.toString().padStart(2, '0')}:${timeParts[1]}`;
+                
+                content.innerHTML += `
+                <div class="class-card" style="--subject-color: ${cls.color};">
+                    <div class="time-block">
+                        <span class="time">${displayTime}</span>
+                        <span class="ampm">${ampm}</span>
+                    </div>
+                    <div class="info-block">
+                        <h4>${cls.sub}</h4>
+                        <p><i class="fas fa-map-marker-alt" style="color:var(--primary);"></i> Room: TBA</p>
+                    </div>
+                    <div class="action-block">
+                        <div class="live-status" id="ind-timer-${dayIndex}-${idx}">--</div>
+                        <a href="${cls.link}" target="_blank" class="join-btn" id="join-btn-${dayIndex}-${idx}">
+                            <i class="fas fa-video"></i> Join Live
+                        </a>
+                    </div>
+                </div>`;
+            });
+        }
+
+        // 2. Fetch the Overall Next Class (For Dashboard)
+        function getNextClass(now) {
+            let day = now.getDay();
+            let currentMins = now.getHours() * 60 + now.getMinutes();
+
+            if (routineData[day]) {
+                for (let cls of routineData[day]) {
+                    let startMins = parseInt(cls.start.split(":")[0]) * 60 + parseInt(cls.start.split(":")[1]);
+                    let endMins = parseInt(cls.end.split(":")[0]) * 60 + parseInt(cls.end.split(":")[1]);
+
+                    if (currentMins >= startMins && currentMins < endMins) {
+                        return { status: 'ongoing', sub: cls.sub, endsIn: endMins - currentMins, link: cls.link };
+                    } else if (currentMins < startMins) {
+                        let targetDate = new Date();
+                        targetDate.setHours(parseInt(cls.start.split(":")[0]), parseInt(cls.start.split(":")[1]), 0, 0);
+                        return { status: 'upcoming', sub: cls.sub, time: targetDate, link: cls.link };
                     }
-                ];
+                }
+            }
 
-                const titleHTML = `<h2 style="font-size: 24px; margin-bottom: 25px; color: var(--text-primary);">Notice Board</h2>`;
-                noticeContainer.innerHTML = titleHTML;
+            for (let i = 1; i <= 7; i++) {
+                let nextDay = (day + i) % 7;
+                if (routineData[nextDay] && routineData[nextDay].length > 0) {
+                    let cls = routineData[nextDay][0];
+                    let targetDate = new Date();
+                    targetDate.setDate(now.getDate() + i);
+                    targetDate.setHours(parseInt(cls.start.split(":")[0]), parseInt(cls.start.split(":")[1]), 0, 0);
+                    return { status: 'upcoming', sub: cls.sub, time: targetDate, link: cls.link };
+                }
+            }
+            return { status: 'none' };
+        }
 
-                noticesData.forEach(notice => {
-                    const noticeCard = document.createElement('div');
-                    noticeCard.className = 'data-card glass-effect';
-                    noticeCard.style.borderLeft = `4px solid ${notice.color}`;
-                    noticeCard.style.marginBottom = '20px';
-                    
-                    noticeCard.innerHTML = `
-                        <h4 style="font-size: 18px; margin-bottom: 10px; color: var(--text-primary); display: flex; align-items: center; gap:10px;">
-                            <div class="glass-icon" style="width:30px; height:30px; font-size:14px; border-color: ${notice.color};">
-                                <i class="fas ${notice.icon}" style="color: ${notice.color};"></i>
-                            </div> 
-                            <span>${notice.title}</span>
-                        </h4>
-                        <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.6;">
-                            ${notice.body}
-                        </p>
-                    `;
-                    noticeContainer.appendChild(noticeCard);
+        // 3. Central Function to Synchronize all Timers and Update Colors
+        function updateAllTimers() {
+            const now = new Date();
+            let currentMins = now.getHours() * 60 + now.getMinutes();
+            let today = now.getDay();
+
+            // Update Top Dashboard Widget
+            const countdownEl = document.getElementById('classCountdown');
+            const subjectEl = document.getElementById('classSubject');
+            let nextCls = getNextClass(now);
+            
+            if (countdownEl && subjectEl) {
+                if (nextCls.status === 'ongoing') {
+                    let h = Math.floor(nextCls.endsIn / 60); let m = nextCls.endsIn % 60;
+                    countdownEl.innerHTML = `<span class="text-red-live" style="font-size:32px;"><span class="pulse">🔴</span> LIVE (Ends in ${h > 0 ? h+'h ':''}${m}m)</span>`;
+                    subjectEl.innerHTML = `<i class="fas fa-chalkboard-teacher"></i> Currently in: ${nextCls.sub} <br><a href="${nextCls.link}" target="_blank" style="display:inline-block; margin-top:10px; background:var(--danger); color:#fff; padding:5px 15px; border-radius:10px; text-decoration:none; font-size:14px; font-weight:bold;"><i class="fas fa-video"></i> Join Live Class</a>`;
+                } else if (nextCls.status === 'upcoming') {
+                    let diff = nextCls.time - now;
+                    let d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    let h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                    let m = Math.floor((diff / 1000 / 60) % 60);
+                    let s = Math.floor((diff / 1000) % 60);
+                    let timeStr = (d > 0 ? `${d}d ` : "") + `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+                    countdownEl.innerText = timeStr;
+                    subjectEl.innerHTML = `<i class="fas fa-clock"></i> Upcoming: ${nextCls.sub} <br><a href="${nextCls.link}" target="_blank" style="display:inline-block; margin-top:10px; background:rgba(255,255,255,0.1); color:var(--text-secondary); padding:5px 15px; border-radius:10px; text-decoration:none; font-size:14px; pointer-events:none;"><i class="fas fa-link"></i> Link opens when live</a>`;
+                } else {
+                    countdownEl.innerText = "--:--:--";
+                    subjectEl.innerText = "No upcoming classes found.";
+                }
+            }
+
+            // Update visible Premium Routine Timers with the New Logic
+            if(routineData[currentRoutineDay]) {
+                routineData[currentRoutineDay].forEach((cls, idx) => {
+                    let timerEl = document.getElementById(`ind-timer-${currentRoutineDay}-${idx}`);
+                    let btnEl = document.getElementById(`join-btn-${currentRoutineDay}-${idx}`);
+                    if(!timerEl || !btnEl) return;
+
+                    let startMins = parseInt(cls.start.split(":")[0]) * 60 + parseInt(cls.start.split(":")[1]);
+                    let endMins = parseInt(cls.end.split(":")[0]) * 60 + parseInt(cls.end.split(":")[1]);
+
+                    if (currentRoutineDay === today) {
+                        if (currentMins >= startMins && currentMins < endMins) {
+                            // During class: RED
+                            timerEl.innerHTML = `<span class="text-red-live"><span class="pulse">🔴</span> LIVE (${endMins - currentMins}m left)</span>`;
+                            btnEl.style.opacity = "1"; btnEl.style.pointerEvents = "auto";
+                        } else if (currentMins < startMins) {
+                            // Before class
+                            let diff = startMins - currentMins;
+                            let h = Math.floor(diff / 60); let m = diff % 60;
+                            let timeText = `Starts in ${h > 0 ? h+'h ':''}${m}m`;
+                            
+                            if (diff <= 120) {
+                                // 1-2 hours before class: ORANGE animation
+                                timerEl.innerHTML = `<span class="anim-orange"><i class="fas fa-hourglass-half"></i> Upcoming: ${timeText}</span>`;
+                            } else {
+                                // Normal upcoming
+                                timerEl.innerHTML = `<span style="color:var(--text-secondary);">Upcoming Class: ${timeText}</span>`;
+                            }
+                            btnEl.style.opacity = "0"; btnEl.style.pointerEvents = "none";
+                        } else {
+                            // After class
+                            let diffAfter = currentMins - endMins;
+                            if (diffAfter <= 300) { 
+                                // 4-5 hours (300 mins) after class: YELLOW animation
+                                timerEl.innerHTML = `<span class="anim-yellow"><i class="fas fa-check-double"></i> Class Ended</span>`;
+                            } else {
+                                // Normal ended
+                                timerEl.innerHTML = `<span style="color:var(--text-secondary);">Class Ended</span>`;
+                            }
+                            btnEl.style.opacity = "0"; btnEl.style.pointerEvents = "none";
+                        }
+                    } else {
+                        // Future or past day currently viewed: "Upcoming Class"
+                        timerEl.innerHTML = `<span style="color:var(--primary); font-weight: 600;"><i class="fas fa-clock"></i> Upcoming Class</span>`;
+                        btnEl.style.opacity = "0"; btnEl.style.pointerEvents = "none";
+                    }
                 });
-
-            } catch (error) {
-                console.error("Error fetching notices:", error);
             }
         }
 
-        // ================= NAVIGATION =================
+        // ================= SGPA CALCULATOR LOGIC =================
+        let addedCourses = [];
+        function addCourseToSGPA() {
+            const grade = parseFloat(document.getElementById('gradeSelect').value);
+            const credit = parseFloat(document.getElementById('creditSelect').value);
+            const gradeText = document.getElementById('gradeSelect').options[document.getElementById('gradeSelect').selectedIndex].text;
+            
+            addedCourses.push({grade, credit, text: `${credit} Cr | ${gradeText}`});
+            updateSGPADisplay();
+        }
+
+        function updateSGPADisplay() {
+            const listDiv = document.getElementById('sgpaCourseList');
+            const resultDiv = document.getElementById('sgpaDisplay');
+            listDiv.innerHTML = "";
+            
+            let totalCredits = 0;
+            let totalPoints = 0;
+
+            addedCourses.forEach((c, i) => {
+                totalCredits += c.credit;
+                totalPoints += (c.credit * c.grade);
+                listDiv.innerHTML += `<div><span>Course ${i+1}</span> <span>${c.text}</span></div>`;
+            });
+
+            if(totalCredits > 0) {
+                let sgpa = (totalPoints / totalCredits).toFixed(2);
+                resultDiv.innerText = sgpa;
+            } else {
+                resultDiv.innerText = "0.00";
+            }
+        }
+
+        function resetSGPA() {
+            addedCourses = [];
+            updateSGPADisplay();
+        }
+
+        // ================= ATTENDANCE TRACKER LOGIC =================
+        let attData = { present: 0, absent: 0 };
+        function loadAttendance() {
+            let saved = localStorage.getItem('cse65c_attendance');
+            if(saved) attData = JSON.parse(saved);
+            renderAttendance();
+        }
+        function updateAttendance(type) {
+            if(type === 'present') attData.present++;
+            if(type === 'absent') attData.absent++;
+            localStorage.setItem('cse65c_attendance', JSON.stringify(attData));
+            renderAttendance();
+        }
+        function resetAttendance() {
+            attData = { present: 0, absent: 0 };
+            localStorage.setItem('cse65c_attendance', JSON.stringify(attData));
+            renderAttendance();
+        }
+        function renderAttendance() {
+            const total = attData.present + attData.absent;
+            const pct = total === 0 ? 0 : Math.round((attData.present / total) * 100);
+            
+            document.getElementById('attTotal').innerText = total;
+            document.getElementById('attPresent').innerText = attData.present;
+            document.getElementById('attPercent').innerText = `${pct}%`;
+            
+            document.getElementById('attChart').style.setProperty('--perc', `${pct}%`);
+            
+            if(pct >= 70) document.getElementById('attChart').style.background = `conic-gradient(var(--success) var(--perc), rgba(255,255,255,0.05) 0)`;
+            else if(pct >= 50) document.getElementById('attChart').style.background = `conic-gradient(var(--warning) var(--perc), rgba(255,255,255,0.05) 0)`;
+            else document.getElementById('attChart').style.background = `conic-gradient(var(--danger) var(--perc), rgba(255,255,255,0.05) 0)`;
+        }
+
+        // ================= OTHER LOGIC =================
+        async function fetchNotices() {
+            const noticeContainer = document.getElementById('notices');
+            const noticesData = [
+                { title: "Class Representatives (CR)", body: "Current Class Representatives are Sabbir Kamaly and Zarin Mashud Sabah.", icon: "fa-star", color: "var(--warning)" },
+                { title: "Portal Update", body: "Smart routine colors added: Orange (Upcoming), Red (Live), Yellow (Ended recently).", icon: "fa-rocket", color: "var(--primary)" }
+            ];
+            noticeContainer.innerHTML = `<h2 style="font-size: 24px; margin-bottom: 25px; color: var(--text-primary);">Notice Board</h2>`;
+            noticesData.forEach(notice => {
+                noticeContainer.innerHTML += `
+                    <div class="data-card glass-effect" style="border-left: 4px solid ${notice.color}; margin-bottom: 20px;">
+                        <h4 style="font-size: 18px; margin-bottom: 10px; color: var(--text-primary); display: flex; align-items: center; gap:10px;">
+                            <div class="glass-icon" style="width:30px; height:30px; font-size:14px; border-color: ${notice.color};"><i class="fas ${notice.icon}" style="color: ${notice.color};"></i></div> 
+                            <span>${notice.title}</span>
+                        </h4>
+                        <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.6;">${notice.body}</p>
+                    </div>`;
+            });
+        }
+
         function switchTab(tabId) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            
-            const eventTarget = event.currentTarget;
-            if(eventTarget) eventTarget.classList.add('active');
-            
+            event.currentTarget.classList.add('active');
             if (window.innerWidth <= 992) { toggleSidebar(); }
         }
 
@@ -748,88 +1122,57 @@
             document.getElementById('overlay').classList.toggle('active');
         }
 
-        // ================= TABLES AND SEARCH =================
         function initializeTables() {
             let total = 0;
             ["regularTable", "reTable"].forEach(id => {
                 let table = document.getElementById(id);
                 if (table) {
-                    let rows = table.querySelectorAll("tbody tr");
-                    rows.forEach((row, index) => {
+                    table.querySelectorAll("tbody tr").forEach((row, index) => {
                         if(row.cells[0]) row.cells[0].innerText = index + 1;
                         total++;
                     });
                 }
             });
-            document.getElementById("totalDashStudents").innerText = total;
             document.getElementById("totalCounter").innerText = total;
         }
 
         function searchTables() {
             let input = document.getElementById("searchInput").value.toUpperCase();
-            let visibleCount = 0;
-            document.querySelectorAll("#students tbody tr").forEach((row) => {
-                let text = row.innerText.toUpperCase();
-                if (text.includes(input)) {
-                    row.style.display = "";
-                    visibleCount++;
-                } else {
-                    row.style.display = "none";
-                }
+            let count = 0;
+            document.querySelectorAll("#students tbody tr").forEach(row => {
+                if(row.innerText.toUpperCase().includes(input)) { row.style.display = ""; count++; } 
+                else { row.style.display = "none"; }
             });
-            document.getElementById("totalCounter").innerText = visibleCount;
+            document.getElementById("totalCounter").innerText = count;
         }
 
-        // ================= COMMENTS & WHATSAPP =================
         function submitComment(target) {
-            const inputField = document.getElementById('commentInput');
-            const text = inputField.value.trim();
-            
-            if(!text) {
-                alert("Please write a message!");
-                return;
-            }
-
-            let phone = "";
-            if (target === 'advisor') phone = "8801609360033";
-            else if (target === 'cr1') phone = "8801334966474";
-            else if (target === 'cr2') phone = "8801727489737";
-
-            const newCommentObj = { text: text, time: new Date().toLocaleString() };
+            const text = document.getElementById('commentInput').value.trim();
+            if(!text) { alert("Please write a message!"); return; }
+            let phone = target === 'advisor' ? "8801609360033" : target === 'cr1' ? "8801334966474" : "8801727489737";
             
             let comments = JSON.parse(localStorage.getItem('portalComments')) || [];
-            comments.unshift(newCommentObj);
+            comments.unshift({ text, time: new Date().toLocaleString() });
             localStorage.setItem('portalComments', JSON.stringify(comments));
 
             loadComments();
-            inputField.value = "";
-
-            const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent("Feedback from Portal: \n" + text)}`;
-            window.open(waUrl, '_blank');
+            document.getElementById('commentInput').value = "";
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent("Feedback: \n" + text)}`, '_blank');
         }
 
         function loadComments() {
-            const commentList = document.getElementById('commentList');
+            const clist = document.getElementById('commentList');
             let comments = JSON.parse(localStorage.getItem('portalComments')) || [];
-            
-            commentList.innerHTML = "";
-            
-            if(comments.length === 0) {
-                commentList.innerHTML = `<p style="color: var(--text-secondary); font-size: 14px;">No comments yet. Be the first to comment!</p>`;
-                return;
-            }
-
-            comments.forEach(comment => {
-                const item = document.createElement('div');
-                item.className = 'comment-msg glass-effect';
-                item.innerHTML = `
-                    <div class="comment-avatar glass-icon"><i class="fas fa-user"></i></div>
-                    <div class="comment-content">
-                        <h5 style="color: var(--text-primary); font-size: 15px; margin-bottom: 5px;">Student <span style="font-size: 12px; color: var(--text-secondary); margin-left: 10px; font-weight: normal;">${comment.time}</span></h5>
-                        <p style="color: var(--text-primary); font-size: 14px; line-height: 1.5;">${comment.text}</p>
-                    </div>
-                `;
-                commentList.appendChild(item);
+            clist.innerHTML = comments.length === 0 ? `<p style="color:var(--text-secondary); font-size:14px;">No comments yet.</p>` : "";
+            comments.forEach(c => {
+                clist.innerHTML += `
+                    <div class="comment-msg glass-effect">
+                        <div class="comment-avatar glass-icon"><i class="fas fa-user"></i></div>
+                        <div class="comment-content">
+                            <h5 style="color:var(--text-primary); font-size:15px; margin-bottom:5px;">Student <span style="font-size:12px; color:var(--text-secondary); margin-left:10px; font-weight:normal;">${c.time}</span></h5>
+                            <p style="color:var(--text-primary); font-size:14px; line-height:1.5;">${c.text}</p>
+                        </div>
+                    </div>`;
             });
         }
     </script>
